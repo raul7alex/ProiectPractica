@@ -21,22 +21,22 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "student")
+@Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, 
         allowGetters = true)
 public class UserPojo implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "ID")
 	private Integer id;
 	
 	@NotBlank
-	@Column(name = "username")
+	@Column(name = "Username")
 	private String username;
 	
 	@NotBlank
-	@Column(name = "password")
+	@Column(name = "Password")
 	private String password;
 
 	public Integer getId() {

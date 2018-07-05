@@ -32,8 +32,8 @@ public class UserController {
 	
 	//create a new one
 	@PostMapping("/users")
-	public UserPojo createUser(@Valid @RequestBody UserPojo users) {
-	    return userDao.save(users);
+	public UserPojo createUser(@Valid @RequestBody UserPojo user) {
+	    return userDao.save(user);
 	}
 	
 	
@@ -41,31 +41,30 @@ public class UserController {
 	public UserPojo getStudentById(@PathVariable(value = "id") Integer userId) {
 	   System.out.println(" ------------------"+userId);
 		return userDao.findById(userId)
-	    		.orElseThrow(() -> new ResourceNotFoundException("User"));
+	    		.orElseThrow(() -> new ResourceNotFoundException("user"));
 	}
 	
 	//update
 	@PutMapping("/users/{id}")
 	public UserPojo updateUser(@PathVariable(value = "id") Integer userId,
-	                                        @Valid @RequestBody UserPojo userDetails) {
+	                                        @Valid @RequestBody UserPojo UserDetails) {
 
 		UserPojo user = userDao.findById(userId)
-	    		.orElseThrow(() -> new ResourceNotFoundException("User"));
+	    		.orElseThrow(() -> new ResourceNotFoundException("user"));
 
-	    user.setId(userDetails.getId());
-	    user.setUsername(userDetails.getUsername());
-	    user.setPassword(userDetails.getPassword());
+	    user.setId(UserDetails.getId());
+	    user.setUsername(UserDetails.getUsername());
+	    user.setPassword(UserDetails.getPassword());
 	    
 	    UserPojo updatedUser = userDao.save(user);
 	    return updatedUser;
 	}
 	
-	@DeleteMapping("/student/{id}")
+	@DeleteMapping("/users/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Integer userId) {
-		UserPojo student = userDao.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("Student"));
-
-		userDao.delete(student);
+		UserPojo user = userDao.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("user"));
+		userDao.delete(user);
 
 	    return ResponseEntity.ok().build();
 	}

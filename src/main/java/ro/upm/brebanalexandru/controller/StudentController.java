@@ -28,24 +28,24 @@ public class StudentController {
 	@Autowired
 	StudentDao studentDao;
 
-	@GetMapping("/students")
+	@GetMapping("/student")
 	public List<StudentPojo> getAllStudents(){
 		return studentDao.findAll();
 	}
 	
-	@PostMapping("/students")
+	@PostMapping("/student")
 	public StudentPojo createStudent(@Valid @RequestBody StudentPojo student) {
 	    return studentDao.save(student);
 	}
 	
-	@GetMapping("/students/{id}")
+	@GetMapping("/student/{id}")
 	public StudentPojo getStudentById(@PathVariable(value = "id") Integer studentId) {
 	   System.out.println(" ------------------"+studentId);
 		return studentDao.findById(studentId)
 	    		.orElseThrow(() -> new ResourceNotFoundException("Student"));
 	}
 	
-	@PutMapping("/students/{id}")
+	@PutMapping("/student/{id}")
 	public StudentPojo updateStudent(@PathVariable(value = "id") Integer studentId,
 	                                        @Valid @RequestBody StudentPojo studentDetails) {
 
@@ -65,7 +65,7 @@ public class StudentController {
 	    return updatedStudent;
 	}
 	
-	@DeleteMapping("/students/{id}")
+	@DeleteMapping("/student/{id}")
 	public ResponseEntity<?> deleteStudent(@PathVariable(value = "id") Integer studentId) {
 		StudentPojo student = studentDao.findById(studentId)
 				.orElseThrow(() -> new ResourceNotFoundException("Student"));

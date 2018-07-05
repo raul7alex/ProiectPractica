@@ -33,10 +33,12 @@ public class StudentController {
 		return studentDao.findAll();
 	}
 	
+	//create a new one
 	@PostMapping("/student")
 	public StudentPojo createStudent(@Valid @RequestBody StudentPojo student) {
 	    return studentDao.save(student);
 	}
+	
 	
 	@GetMapping("/student/{id}")
 	public StudentPojo getStudentById(@PathVariable(value = "id") Integer studentId) {
@@ -45,6 +47,7 @@ public class StudentController {
 	    		.orElseThrow(() -> new ResourceNotFoundException("Student"));
 	}
 	
+	//update
 	@PutMapping("/student/{id}")
 	public StudentPojo updateStudent(@PathVariable(value = "id") Integer studentId,
 	                                        @Valid @RequestBody StudentPojo studentDetails) {

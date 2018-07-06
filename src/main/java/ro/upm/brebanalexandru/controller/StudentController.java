@@ -3,7 +3,7 @@ package ro.upm.brebanalexandru.controller;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-
+import ro.upm.brebanalexandru.bl.StudentBl;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,22 @@ import ro.upm.brebanalexandru.pojo.StudentPojo;
 
 @RestController
 @RequestMapping("/api")
-public class StudentController {
+public class StudentController{
 
-	@Autowired
-	StudentDao studentDao;
+	StudentBl studentBl;
+	
+    @Autowired
+    public void setStudentBl(StudentBl studentBl) {
+        this.studentBl = studentBl;
+    }
+	
+//	@Autowired
+//	StudentDao studentDao;
 
 	@GetMapping("/student")
 	public List<StudentPojo> getAllStudents(){
-		return studentDao.findAll();
+		//return studentDao.findAll();
+		return studentBl.getClass();
 	}
 	
 	//create a new one

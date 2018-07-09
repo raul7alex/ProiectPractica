@@ -5,8 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,32 +15,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ro.upm.brebanalexandru.dao.UserDao;
+import ro.upm.brebanalexandru.bl.UserBl;
 import ro.upm.brebanalexandru.pojo.UserPojo;
 
 @RestController
 @RequestMapping("/api")
 public class UserController {
 	@Autowired
-	UserDao userDao;
+	UserBl userBl;
 
 	@GetMapping("/users")
 	public List<UserPojo> getAllUsers(){
-		return userDao.findAll();
+		return userBl.findAll();
 	}
 	
 	//create a new one
 	@PostMapping("/users")
 	public UserPojo createUser(@Valid @RequestBody UserPojo user) {
-	    return userDao.save(user);
+	    return userBl.save(user);
 	}
 	
 	
 	@GetMapping("/users/{id}")
-	public UserPojo getStudentById(@PathVariable(value = "id") Integer userId) {
-	   System.out.println(" ------------------"+userId);
-		return userDao.findById(userId)
-	    		.orElseThrow(() -> new ResourceNotFoundException("user"));
+	public UserPojo getUserById(@PathVariable(value = "id") Integer userId) {
+		return userBl.getUserById(userId);
 	}
 	
 	//update
@@ -49,23 +46,11 @@ public class UserController {
 	public UserPojo updateUser(@PathVariable(value = "id") Integer userId,
 	                                        @Valid @RequestBody UserPojo UserDetails) {
 
-		UserPojo user = userDao.findById(userId)
-	    		.orElseThrow(() -> new ResourceNotFoundException("user"));
-
-	    user.setId(UserDetails.getId());
-	    user.setUsername(UserDetails.getUsername());
-	    user.setPassword(UserDetails.getPassword());
-	    
-	    UserPojo updatedUser = userDao.save(user);
-	    return updatedUser;
+		return userBl.updateUser(userId,UserDetails);
 	}
 	
 	@DeleteMapping("/users/{id}")
-	public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Integer userId) {
-		UserPojo user = userDao.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("user"));
-		userDao.delete(user);
-
-	    return ResponseEntity.ok().build();
+	public UserPojo deleteUser(@PathVariable(value = "id") Integer userId) {
+		return userBl.deleteUser(userId);
 	}
 }

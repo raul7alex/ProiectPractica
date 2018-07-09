@@ -9,6 +9,8 @@ import ro.upm.brebanalexandru.pojo.StudentPojo;
 @Repository	
 public interface StudentDao extends JpaRepository<StudentPojo, Integer>{
 
+	
+
 
 
 

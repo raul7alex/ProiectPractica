@@ -2,13 +2,14 @@ package ro.upm.brebanalexandru.bl;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import ro.upm.brebanalexandru.pojo.StudentPojo;
 import ro.upm.brebanalexandru.service.StudentService;
 
+
+@Service
 public class StudentBl {
 
 	@Autowired
@@ -19,21 +20,23 @@ public class StudentBl {
 	}
 
 	public StudentPojo save(StudentPojo student) {
-		// TODO valideaza name etc
 		return studentService.save(student);
 	}
 
-	public StudentPojo getStudentById(Integer studentId) {
-		// TODO verifici paramtrii
-		return studentService.getStudentById(studentId);
+	public StudentPojo findStudentById(Integer studentId) {
+		return studentService.findStudentById(studentId);
 	}
 
-	public StudentPojo updateStudent(Integer studentId, @Valid StudentPojo studentDetails) {
-		return studentService.updateStudent(studentId,studentDetails);
+	public void updateStudent(Integer studentId, StudentPojo studentDetails) throws Exception {
+		if(studentService.findStudentById(studentId) == null) throw new Exception("afads");
+		if(studentDetails==null) throw new Exception("Empty student field!");
+		if(studentDetails.getFirstname()==null||studentDetails.getFirstname().isEmpty()) throw new Exception("Empty student First Name field!");
+		studentService.updateStudent(studentId, studentDetails);
 	}
 
-	public StudentPojo deleteStudent(Integer studentId) {
-		return studentService.deleteStudent(studentId);
+	public void deleteByID( Integer studentId ) throws Exception {
+		if(studentService.findStudentById(studentId)==null)throw new Exception("No student with this ID!");
+		studentService.deleteById(studentId);
 	}
 
 

@@ -26,10 +26,9 @@ public class UserController {
 
 	@GetMapping("/users")
 	public List<UserPojo> getAllUsers(){
-		return userBl.findAll();
+		return userBl.getAllUsers();
 	}
 	
-	//create a new one
 	@PostMapping("/users")
 	public UserPojo createUser(@Valid @RequestBody UserPojo user) {
 	    return userBl.save(user);
@@ -37,20 +36,32 @@ public class UserController {
 	
 	
 	@GetMapping("/users/{id}")
-	public UserPojo getUserById(@PathVariable(value = "id") Integer userId) {
-		return userBl.getUserById(userId);
+	public UserPojo findUserById(@PathVariable(value = "id") Integer userId) {
+		return userBl.findUserById(userId);
 	}
 	
 	//update
 	@PutMapping("/users/{id}")
 	public UserPojo updateUser(@PathVariable(value = "id") Integer userId,
-	                                        @Valid @RequestBody UserPojo UserDetails) {
+	                                        @Valid @RequestBody UserPojo userDetails) {
 
-		return userBl.updateUser(userId,UserDetails);
+		try {
+	    	userBl.updateUser(userId, userDetails);
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    	return null;
+	    }
+	    return null;
 	}
 	
 	@DeleteMapping("/users/{id}")
-	public UserPojo deleteUser(@PathVariable(value = "id") Integer userId) {
-		return userBl.deleteUser(userId);
+	public UserPojo deleteUserById(@PathVariable(value = "id") Integer userId) {
+		try {
+			userBl.deleteById(userId);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
 	}
 }

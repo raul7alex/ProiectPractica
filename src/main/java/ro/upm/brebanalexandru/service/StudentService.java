@@ -2,8 +2,6 @@ package ro.upm.brebanalexandru.service;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
 import ro.upm.brebanalexandru.pojo.StudentPojo;;
@@ -18,10 +16,12 @@ public interface StudentService {
 
 	public StudentPojo save(StudentPojo student);
 
-	public StudentPojo getStudentById(Integer studentId) throws ResourceNotFoundException	;
+	public void updateStudent(Integer studentId, StudentPojo studentDetails);
 
-	public StudentPojo deleteStudent(Integer studentId);
+	public StudentPojo findStudentById(Integer studentId) throws ResourceNotFoundException	;
 
-	public StudentPojo updateStudent(Integer studentId, @Valid StudentPojo studentDetails);
+	public void deleteById(Integer studentId);
+
+
 
 }

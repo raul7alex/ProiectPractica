@@ -31,7 +31,7 @@ public class StudentServiceImpl implements StudentService{
 	}
 	
 	@Override
-	public StudentPojo getStudentById(Integer studentId) throws ResourceNotFoundException	 {
+	public StudentPojo findStudentById(Integer studentId) throws ResourceNotFoundException	 {
 		return studentsDao.findById(studentId)
 	    		.orElseThrow(() -> new ResourceNotFoundException("Student"));
 	}
@@ -49,29 +49,26 @@ public class StudentServiceImpl implements StudentService{
 	}
 
 	@Override
-	public StudentPojo updateStudent(Integer studentId, StudentPojo studentDetails) {
+	public void updateStudent(Integer studentId, StudentPojo studentDetails) {
 		StudentPojo student = studentsDao.findById(studentId)
 	    		.orElseThrow(() -> new ResourceNotFoundException("Student"));
-
-	    student.setId(studentDetails.getId());
+	    student.setId(studentId);
 	    student.setLastname(studentDetails.getLastname());
 	    student.setFirstname(studentDetails.getFirstname());
 	    student.setProfile(studentDetails.getProfile());
 	    student.setYear(studentDetails.getYear());
-	    
-	    Date date = new Date();
-	    student.setRegistrationdate(new Timestamp(date.getTime()));
+	    Timestamp stamp=new Timestamp(System.currentTimeMillis());
+	    Date date = new Date(stamp.getTime());
+	    student.setLastmod(date);
+	    studentsDao.save(student);
 
-	    StudentPojo updatedStudent = studentsDao.save(student);
-		return updatedStudent;
 	}
+
 
 	@Override
-	public StudentPojo deleteStudent(Integer studentId) {
-		StudentPojo student = studentsDao.findById(studentId)
-			.orElseThrow(() -> new ResourceNotFoundException("Student"));
-	studentsDao.delete(student);
-	return student;
+	public void deleteById(Integer studentId) {
+		studentsDao.deleteById(studentId);
 	}
+
 	
 }

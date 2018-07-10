@@ -29,7 +29,7 @@ public class StudentController{
 		return studentBl.getAllStudents();
 	}
 	
-	//create a new one
+
 	@PostMapping("/student")
 	public StudentPojo createStudent(@Valid @RequestBody StudentPojo student) {
 	    return studentBl.save(student);
@@ -37,19 +37,31 @@ public class StudentController{
 	
 	
 	@GetMapping("/student/{id}")
-	public StudentPojo getStudentById(@PathVariable(value = "id") Integer studentId) {	
-		return studentBl.getStudentById(studentId);
+	public StudentPojo findStudentById(@PathVariable(value = "id") Integer studentId) {	
+		return studentBl.findStudentById(studentId);
 	}
 	
-	//update
+	//to do
 	@PutMapping("/student/{id}")
 	public StudentPojo updateStudent(@PathVariable(value = "id") Integer studentId,
 	                                        @Valid @RequestBody StudentPojo studentDetails) {
-	    return studentBl.updateStudent(studentId,studentDetails);
+	    try {
+	    	studentBl.updateStudent(studentId, studentDetails);
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    	return null;
+	    }
+	    return null;
 	}
 	
 	@DeleteMapping("/student/{id}")
-	public StudentPojo deleteStudent(@PathVariable(value = "id") Integer studentId) {
-		return studentBl.deleteStudent(studentId);
+	public StudentPojo deleteStudentById(@PathVariable(value = "id") Integer studentId) {
+		try {
+			studentBl.deleteByID(studentId);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
 	}
 }

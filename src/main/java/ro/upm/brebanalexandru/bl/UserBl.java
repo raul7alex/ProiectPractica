@@ -5,39 +5,41 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import ro.upm.brebanalexandru.pojo.UserPojo;
 import ro.upm.brebanalexandru.service.UserService;
 
+@Service
 public class UserBl {
 
 	@Autowired
 	UserService userService;
 	
-	public UserPojo deleteUser(Integer userId) {
-		return userService.deleteUser(userId);
+	public void deleteById(Integer userId)throws Exception {
+		if(userService.findUserById(userId)==null)throw new Exception("No user with this ID!");
+		userService.deleteById(userId);
 		
 	}
 
-	public List<UserPojo> findAll() {
-		// TODO Auto-generated method stub
-		return userService.findAll();
+	public List<UserPojo> getAllUsers() {
+		return userService.getAllUsers();
 	}
 
-	public UserPojo save(@Valid UserPojo user) {
-		// TODO Auto-generated method stub
+	public UserPojo save( UserPojo user) {
 		return userService.save(user);
 	}
 
 
-	public UserPojo updateUser(Integer userId, @Valid UserPojo userDetails) {
-		// TODO Auto-generated method stub
-		return userService.updateUser(userId,userDetails);
+	public void updateUser(Integer userId, @Valid UserPojo userDetails)throws Exception {
+		if(userService.findUserById(userId) == null) throw new Exception("afads");
+		if(userDetails==null) throw new Exception("Empty student field!");
+		if(userDetails.getUsername()==null||userDetails.getUsername().isEmpty()) throw new Exception("Empty student First Name field!");
+		userService.updateUser(userId, userDetails);
 	}
 
-	public UserPojo getUserById(Integer userId) {
-		// TODO Auto-generated method stub
-		return userService.getUserById(userId);
+	public UserPojo findUserById(Integer userId) {
+		return userService.findUserById(userId);
 	}
 	
 }

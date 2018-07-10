@@ -2,15 +2,15 @@ package ro.upm.brebanalexandru.service.impl;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
 
 import ro.upm.brebanalexandru.dao.UserDao;
 import ro.upm.brebanalexandru.pojo.UserPojo;
 import ro.upm.brebanalexandru.service.UserService;
 
+@Service
 public class UserServiceImpl implements UserService{
 
 	@Autowired
@@ -24,42 +24,29 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<UserPojo> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<UserPojo> getAllUsers() {
+		return userDao.findAll();
 	}
 
 	@Override
-	public UserPojo save(@Valid UserPojo user) {
-		// TODO Auto-generated method stub
-		return null;
+	public UserPojo save( UserPojo user) {
+		return userDao.save(user);
 	}
 
 	@Override
-	public UserPojo getUserById(Integer userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public UserPojo findUserById(Integer userId) throws ResourceNotFoundException {
+		return userDao.findById(userId)
+	    		.orElseThrow(() -> new ResourceNotFoundException("User"));
 	}
 
 	@Override
-	public UserPojo updateUser(Integer userId, @Valid UserPojo userDetails) {
+	public void updateUser(Integer userId, UserPojo userDetails) {
 		UserPojo user = userDao.findById(userId)
 			.orElseThrow(() -> new ResourceNotFoundException("user"));
-		
-		user.setId(userDetails.getId());
+		user.setId(userId);
 		user.setUsername(userDetails.getUsername());
 		user.setPassword(userDetails.getPassword());
-		UserPojo updatedUser = userDao.save(user);
-		return updatedUser;
-	}
-
-	@Override
-	public UserPojo deleteUser(Integer userId) {
-		UserPojo user = userDao.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("user"));
-		userDao.delete(user);
-//return ResponseEntity.ok().build();
-		return null;
+		userDao.save(user);
 	}
 
 	@Override
@@ -68,5 +55,8 @@ public class UserServiceImpl implements UserService{
 		return null;
 	}
 	
-
+	@Override
+	public void deleteById(Integer userId) {
+		userDao.deleteById(userId);
+	}
 }
